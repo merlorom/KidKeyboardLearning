@@ -3,10 +3,13 @@
 
 #include <core/tile.h>
 
+#include <sstream>
+
 namespace KeyLabyrinth {
 
 void TileTests::execute() {
     basic_tests();
+    test_write_read();
 }
 
 void TileTests::basic_tests() {
@@ -43,6 +46,24 @@ void TileTests::basic_tests() {
             }
         }
     }
+}
+
+void TileTests::test_write_read() {
+    Tile tile;
+    tile.set_key( 'e' );
+    tile.set_walls( Tile::Down | Tile::Right );
+
+    std::ostringstream out;
+    out << tile;
+    std::string str = out.str();
+
+    std::istringstream in( str );
+    Tile tile2;
+    in >> tile2;
+
+    CPPUNIT_ASSERT( tile == tile2 );
+
+
 }
 
 }

@@ -8,11 +8,15 @@ DEPENDPATH += . core
 INCLUDEPATH += . ..
 DESTDIR = ../bin
 OBJECTS_DIR = build
-LIBS += ../build/tile.o
+LIBS += ../build/tile.o ../build/labyrinth.o
 
 # Input
 HEADERS += tests_utils.h
 SOURCES += tests_main.cpp
 
-HEADERS += core/tests_tile.h
-SOURCES += core/tests_tile.cpp
+HEADERS += \
+           core/tests_tile.h \
+           core/tests_labyrinth.h
+SOURCES += \
+           core/tests_tile.cpp \
+           core/tests_labyrinth.cpp

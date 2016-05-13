@@ -1,3 +1,6 @@
+#ifndef KeyLabyrinth_ui_main_window_h
+#define KeyLabyrinth_ui_main_window_h
+
 #include <QMainWindow>
 
 namespace KeyLabyrinth {
@@ -10,3 +13,5 @@ public:
 };
 
 }
+
+#endif
