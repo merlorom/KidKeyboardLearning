@@ -14,6 +14,13 @@ void Labyrinth::reset() {
     tiles_.clear();
 }
 
+void Labyrinth::resize( int nb_rows, int nb_cols ) {
+    tiles_.resize( nb_rows );
+    for( auto& tile_row : tiles_ ) {
+        tile_row.resize( nb_cols );
+    }
+}
+
 bool Labyrinth::operator==( const Labyrinth& rhs ) const {
     return tiles() == rhs.tiles();
 }
@@ -46,7 +53,7 @@ LabyrinthWriter::LabyrinthWriter( const Labyrinth& lab ) :
     lab_( lab )
 {}
 
-bool LabyrinthWriter::write( const std::string& path ) const {
+bool LabyrinthWriter::write( const std::string& /*path*/ ) const {
     //std::ofstream out( path );
     //if( !out.good() ) {
         //return false;
@@ -81,7 +88,7 @@ LabyrinthReader::LabyrinthReader( Labyrinth& lab ) :
     lab_( lab )
 {}
 
-bool LabyrinthReader::read( const std::string& path ) {
+bool LabyrinthReader::read( const std::string& /*path*/ ) {
     //std::ifstream in( path );
     //if( !in.good() ) {
         //return false;

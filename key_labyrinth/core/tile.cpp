@@ -3,7 +3,7 @@
 namespace KeyLabyrinth {
 
 Tile::Tile() :
-    key_( 'a' ),
+    key_( '~' ),
     walls_( 0 )
 {}
 

@@ -14,6 +14,7 @@ public:
     Labyrinth();
 
     void reset();
+    void resize( int nb_rows, int nb_cols );
 
     std::vector<std::vector<Tile>>& tiles();
     const std::vector<std::vector<Tile>>& tiles() const;

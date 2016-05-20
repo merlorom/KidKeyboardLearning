@@ -9,10 +9,13 @@ DEPENDPATH += . core ui
 INCLUDEPATH += . core ui
 DESTDIR = bin
 OBJECTS_DIR = build
+UI_DIR = ui
+QMAKE_CXXFLAGS += -Werror
 
-# Input
+# Input main
 SOURCES += main.cpp
 
+# Input core
 HEADERS += \
            core/tile.h \
            core/labyrinth.h
@@ -20,5 +23,12 @@ SOURCES += \
            core/tile.cpp \
            core/labyrinth.cpp
 
-HEADERS += ui/main_window.h
-SOURCES += ui/main_window.cpp
+# Input ui
+FORMS += ui/editor.ui
+HEADERS += \
+           ui/main_window.h \
+           ui/editor.h
+SOURCES += \
+           ui/main_window.cpp \
+           ui/editor.cpp
+
