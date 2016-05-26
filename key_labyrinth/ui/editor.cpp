@@ -20,7 +20,7 @@ LabyrinthEditor::~LabyrinthEditor() {
 
 void LabyrinthEditor::initialize() {
     // labyrinth widget
-    lab_widget_ = new LabyrinthWidget();
+    lab_widget_ = new LabyrinthEditorWidget();
     ui_->mainLayout->insertWidget( 1, lab_widget_ );
     Labyrinth* lab = new Labyrinth();
     lab->resize( 5, 5 );
