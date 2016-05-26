@@ -1,5 +1,6 @@
 #include "editor.h"
 #include "ui_editor.h"
+#include "labyrinth_widget.h"
 
 #include <core/labyrinth.h>
 
@@ -18,39 +19,22 @@ LabyrinthEditor::~LabyrinthEditor() {
 }
 
 void LabyrinthEditor::initialize() {
+    // labyrinth widget
+    lab_widget_ = new LabyrinthWidget();
+    ui_->mainLayout->insertWidget( 1, lab_widget_ );
+    Labyrinth* lab = new Labyrinth();
+    lab->resize( 5, 5 );
+    lab_widget_->set_labyrinth( lab );
+
     // table size
-    connect( ui_->spinNbRows, SIGNAL(valueChanged(int)), this, SLOT(set_nb_rows(int)) );
-    connect( ui_->spinNbCols, SIGNAL(valueChanged(int)), this, SLOT(set_nb_cols(int)) );
+    connect( ui_->spinNbRows, SIGNAL(valueChanged(int)), lab_widget_, SLOT(set_nb_rows(int)) );
+    connect( ui_->spinNbCols, SIGNAL(valueChanged(int)), lab_widget_, SLOT(set_nb_cols(int)) );
 
     // wall style
-    connect( ui_->pushWallLeft, SIGNAL(toggled(bool)), this, SLOT(set_wall_left(bool)) );
-    connect( ui_->pushWallRight, SIGNAL(toggled(bool)), this, SLOT(set_wall_right(bool)) );
-    connect( ui_->pushWallTop, SIGNAL(toggled(bool)), this, SLOT(set_wall_top(bool)) );
-    connect( ui_->pushWallBottom, SIGNAL(toggled(bool)), this, SLOT(set_wall_bottom(bool)) );
-}
-
-void LabyrinthEditor::set_nb_rows( int nb_rows ) {
-    ui_->tableLabyrinth->setRowCount( nb_rows );
-}
-
-void LabyrinthEditor::set_nb_cols( int nb_cols ) {
-    ui_->tableLabyrinth->setColumnCount( nb_cols );
-}
-
-void LabyrinthEditor::set_wall_left( bool /*set*/ ) {
-    //QTableWidgetItem* item = ui_->tableLabyrinth->currentItem();
-}
-
-void LabyrinthEditor::set_wall_right( bool /*set*/ ) {
-    //QTableWidgetItem* item = ui_->tableLabyrinth->currentItem();
-}
-
-void LabyrinthEditor::set_wall_top( bool /*set*/ ) {
-    //QTableWidgetItem* item = ui_->tableLabyrinth->currentItem();
-}
-
-void LabyrinthEditor::set_wall_bottom( bool /*set*/ ) {
-    //QTableWidgetItem* item = ui_->tableLabyrinth->currentItem();
+    connect( ui_->pushWallLeft, SIGNAL(toggled(bool)), lab_widget_, SLOT(set_wall_left(bool)) );
+    connect( ui_->pushWallRight, SIGNAL(toggled(bool)), lab_widget_, SLOT(set_wall_right(bool)) );
+    connect( ui_->pushWallTop, SIGNAL(toggled(bool)), lab_widget_, SLOT(set_wall_top(bool)) );
+    connect( ui_->pushWallBottom, SIGNAL(toggled(bool)), lab_widget_, SLOT(set_wall_bottom(bool)) );
 }
 
 }

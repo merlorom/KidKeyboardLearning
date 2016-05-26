@@ -27,8 +27,12 @@ SOURCES += \
 FORMS += ui/editor.ui
 HEADERS += \
            ui/main_window.h \
-           ui/editor.h
+           ui/editor.h \
+           ui/labyrinth_widget.h \
+           ui/tile_item.h
 SOURCES += \
            ui/main_window.cpp \
-           ui/editor.cpp
+           ui/editor.cpp \
+           ui/labyrinth_widget.cpp \
+           ui/tile_item.cpp
 

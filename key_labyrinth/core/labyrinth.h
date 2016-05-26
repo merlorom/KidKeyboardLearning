@@ -14,7 +14,11 @@ public:
     Labyrinth();
 
     void reset();
-    void resize( int nb_rows, int nb_cols );
+    void resize( size_t nb_rows, size_t nb_cols );
+    void set_nb_rows( size_t nb_rows );
+    void set_nb_cols( size_t nb_cols );
+    size_t nb_rows() const;
+    size_t nb_cols() const;
 
     std::vector<std::vector<Tile>>& tiles();
     const std::vector<std::vector<Tile>>& tiles() const;
@@ -28,8 +32,18 @@ public:
     Labyrinth& operator<<( Tile&& tile );
 
 private:
+    size_t nb_rows_;
+    size_t nb_cols_;
     std::vector<std::vector<Tile>> tiles_;
 };
+
+inline size_t Labyrinth::nb_rows() const {
+    return nb_rows_;
+}
+
+inline size_t Labyrinth::nb_cols() const {
+    return nb_cols_;
+}
 
 inline std::vector<std::vector<Tile>>& Labyrinth::tiles() {
     return tiles_;

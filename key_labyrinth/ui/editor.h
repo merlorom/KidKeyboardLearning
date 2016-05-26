@@ -8,7 +8,7 @@ namespace Ui {
 }
 
 namespace KeyLabyrinth {
-    class Labyrinth;
+    class LabyrinthWidget;
 }
 
 namespace KeyLabyrinth {
@@ -23,17 +23,9 @@ public:
 private:
     void initialize();
 
-private slots:
-    void set_nb_rows( int nb_rows );
-    void set_nb_cols( int nb_cols );
-    void set_wall_left( bool set );
-    void set_wall_right( bool set );
-    void set_wall_top( bool set );
-    void set_wall_bottom( bool set );
-
 private:
     Ui::LabyrinthEditor* ui_;
-    Labyrinth* lab_;
+    LabyrinthWidget* lab_widget_;
 };
 
 }

@@ -8,16 +8,38 @@ namespace KeyLabyrinth {
 
 /******************************************************************************/
 
-Labyrinth::Labyrinth() {}
+Labyrinth::Labyrinth() :
+    nb_rows_( 0 ),
+    nb_cols_( 0 )
+{}
 
 void Labyrinth::reset() {
     tiles_.clear();
+    nb_rows_ = 0;
+    nb_cols_ = 0;
 }
 
-void Labyrinth::resize( int nb_rows, int nb_cols ) {
-    tiles_.resize( nb_rows );
+void Labyrinth::resize( size_t nb_rows, size_t nb_cols ) {
+    nb_rows_ = nb_rows;
+    nb_cols_ = nb_cols;
+    tiles_.resize( nb_rows_ );
     for( auto& tile_row : tiles_ ) {
-        tile_row.resize( nb_cols );
+        tile_row.resize( nb_cols_ );
+    }
+}
+
+void Labyrinth::set_nb_rows( size_t nb_rows ) {
+    nb_rows_ = nb_rows;
+    tiles_.resize( nb_rows_ );
+    for( auto& tile_row : tiles_ ) {
+        tile_row.resize( nb_cols_ );
+    }
+}
+
+void Labyrinth::set_nb_cols( size_t nb_cols ) {
+    nb_cols_ = nb_cols;
+    for( auto& tile_row : tiles_ ) {
+        tile_row.resize( nb_cols_ );
     }
 }
 
