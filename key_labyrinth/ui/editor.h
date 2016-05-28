@@ -8,6 +8,7 @@ namespace Ui {
 }
 
 namespace KeyLabyrinth {
+    class Tile;
     class LabyrinthEditorWidget;
 }
 
@@ -23,6 +24,7 @@ public:
 public slots:
     void load();
     void save();
+    void selection_changed( Tile& tile );
 
 signals:
     void wall_left_pressed();

@@ -49,6 +49,9 @@ void LabyrinthEditor::initialize() {
     // load/save
     connect( ui_->pushLoad, SIGNAL(pressed()), this, SLOT(load()) );
     connect( ui_->pushSave, SIGNAL(pressed()), this, SLOT(save()) );
+
+    // selection
+    connect( lab_widget_, SIGNAL(selection_changed(Tile&)), this, SLOT(selection_changed(Tile&)) );
 }
 
 void LabyrinthEditor::load() {
@@ -75,6 +78,13 @@ void LabyrinthEditor::save() {
     }
     LabyrinthWriter writer( *lab_widget_->labyrinth() );
     writer.write( file_name.toStdString() );
+}
+
+void LabyrinthEditor::selection_changed( Tile& tile ) {
+    ui_->pushWallLeft->setChecked( tile.has_wall( Tile::WallDir::Left ) );
+    ui_->pushWallRight->setChecked( tile.has_wall( Tile::WallDir::Right ) );
+    ui_->pushWallTop->setChecked( tile.has_wall( Tile::WallDir::Top ) );
+    ui_->pushWallBottom->setChecked( tile.has_wall( Tile::WallDir::Bottom ) );
 }
 
 void LabyrinthEditor::keyPressEvent( QKeyEvent* event ) {

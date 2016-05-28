@@ -6,6 +6,7 @@
 #include <QGraphicsView>
 
 namespace KeyLabyrinth {
+    class Tile;
     class Labyrinth;
     class TileItem;
     class TileEditorItem;
@@ -84,6 +85,11 @@ public slots:
     virtual void move_right() final;
     virtual void move_up() final;
     virtual void move_down() final;
+
+    void propagate_selection_changed_event();
+
+signals:
+    void selection_changed( Tile& tile );
 
 private:
     virtual QGraphicsScene* create_scene() final;

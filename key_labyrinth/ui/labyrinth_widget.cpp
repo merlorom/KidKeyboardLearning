@@ -103,6 +103,7 @@ QGraphicsScene* LabyrinthEditorWidget::create_scene() {
     connect( scene, SIGNAL(move_right_pressed()), this, SLOT(move_right()) );
     connect( scene, SIGNAL(move_up_pressed()), this, SLOT(move_up()) );
     connect( scene, SIGNAL(move_down_pressed()), this, SLOT(move_down()) );
+    connect( scene, SIGNAL(selectionChanged()), this, SLOT(propagate_selection_changed_event()) );
     return scene;
 }
 
@@ -120,6 +121,13 @@ TileEditorItem* LabyrinthEditorWidget::first_selected_tile() const {
         return nullptr;
     }
     return tile_items.at( 0 );
+}
+
+void LabyrinthEditorWidget::propagate_selection_changed_event() {
+    TileEditorItem* tile = first_selected_tile();
+    if( tile != nullptr ) {
+        emit selection_changed( *tile->tile() );
+    }
 }
 
 void LabyrinthEditorWidget::set_nb_rows( int nb_rows ) {
