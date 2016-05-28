@@ -41,7 +41,7 @@ public slots:
 protected:
     void reset_scene();
     void fill_scene();
-    virtual TileItem* create_tile( size_t tile_row, size_t tile_col ) = 0;
+    virtual TileItem* create_tile( size_t tile_row, size_t tile_col ) const = 0;
     virtual QGraphicsScene* create_scene() = 0;
 
 protected:
@@ -77,7 +77,7 @@ public slots:
     void set_wall_top( bool set );
     void set_wall_bottom( bool set );
 
-    void set_character( char c );
+    void set_character( QChar c );
 
     virtual void move_at( TileItem* from_tile, size_t row, size_t col ) final;
     virtual void move_left() final;
@@ -87,7 +87,7 @@ public slots:
 
 private:
     virtual QGraphicsScene* create_scene() final;
-    virtual TileItem* create_tile( size_t tile_row, size_t tile_col ) final;
+    virtual TileItem* create_tile( size_t tile_row, size_t tile_col ) const final;
 
     QList<TileEditorItem*> selected_tiles() const;
     TileEditorItem* first_selected_tile() const;

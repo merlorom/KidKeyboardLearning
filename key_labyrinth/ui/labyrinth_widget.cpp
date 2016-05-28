@@ -93,7 +93,7 @@ LabyrinthEditorWidget::LabyrinthEditorWidget( QWidget* parent ) :
 LabyrinthEditorWidget::~LabyrinthEditorWidget() {
 }
 
-TileItem* LabyrinthEditorWidget::create_tile( size_t tile_row, size_t tile_col ) {
+TileItem* LabyrinthEditorWidget::create_tile( size_t tile_row, size_t tile_col ) const {
     return new TileEditorItem( *this, tile_row, tile_col );
 }
 
@@ -183,19 +183,19 @@ void LabyrinthEditorWidget::set_wall_bottom( bool set ) {
 
     QList<TileEditorItem*> tile_items = selected_tiles();
     for( TileEditorItem* tile_item : tile_items ) {
-        tile_item->tile()->set_wall( Tile::Bottom, set );
+        tile_item->tile()->set_wall( Tile::WallDir::Bottom, set );
         tile_item->update();
     }
 }
 
-void LabyrinthEditorWidget::set_character( char c ) {
-    if( lab_ == nullptr ) {
+void LabyrinthEditorWidget::set_character( QChar c ) {
+    if( lab_ == nullptr || !c.isPrint() ) {
         return;
     }
 
     QList<TileEditorItem*> tile_items = selected_tiles();
     for( TileEditorItem* tile_item : tile_items ) {
-        tile_item->tile()->set_key( c );
+        tile_item->tile()->set_key( c.toAscii() );
         tile_item->update();
     }
 }

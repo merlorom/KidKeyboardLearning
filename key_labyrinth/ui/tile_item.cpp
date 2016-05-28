@@ -77,7 +77,7 @@ Tile* TileItem::tile() const {
 /******************************************************************************/
 
 TileEditorItem::TileEditorItem(
-    LabyrinthEditorWidget& lab_widget,
+    const LabyrinthEditorWidget& lab_widget,
     size_t tile_row,
     size_t tile_col
 ) :

@@ -78,68 +78,75 @@ void LabyrinthEditor::save() {
 }
 
 void LabyrinthEditor::keyPressEvent( QKeyEvent* event ) {
-    Qt::KeyboardModifiers mod = event->modifiers();
-    if( mod != 0 ) {
+    if( !insert_mode_ ) {
+        // entering insert mode
+        if( event->key() == Qt::Key_I ) {
+            insert_mode_ = true;
+            event->accept();
+            return;
+        }
+
         // moves
-        if( mod.testFlag( Qt::ControlModifier) ) {
-            if( event->key() == Qt::Key_J ) {
-                lab_widget_->move_down();
-                event->accept();
-                return;
-            }
-            if( event->key() == Qt::Key_K ) {
-                lab_widget_->move_up();
-                event->accept();
-                return;
-            }
-            if( event->key() == Qt::Key_L ) {
-                lab_widget_->move_left();
-                event->accept();
-                return;
-            }
-            if( event->key() == Qt::Key_Semicolon ) {
-                lab_widget_->move_right();
-                event->accept();
-                return;
-            }
+        if( event->key() == Qt::Key_J ) {
+            lab_widget_->move_down();
+            event->accept();
+            return;
+        }
+        if( event->key() == Qt::Key_K ) {
+            lab_widget_->move_up();
+            event->accept();
+            return;
+        }
+        if( event->key() == Qt::Key_L ) {
+            lab_widget_->move_left();
+            event->accept();
+            return;
+        }
+        if( event->key() == Qt::Key_Semicolon ) {
+            lab_widget_->move_right();
+            event->accept();
+            return;
         }
 
         // walls
-        if( mod.testFlag( Qt::AltModifier) ) {
-            if( event->key() == Qt::Key_J ) {
-                emit wall_bottom_pressed();
-                event->accept();
-                return;
-            }
-            if( event->key() == Qt::Key_K ) {
-                emit wall_top_pressed();
-                event->accept();
-                return;
-            }
-            if( event->key() == Qt::Key_L ) {
-                emit wall_left_pressed();
-                event->accept();
-                return;
-            }
-            if( event->key() == Qt::Key_Semicolon ) {
-                emit wall_right_pressed();
-                event->accept();
-                return;
-            }
+        if( event->key() == Qt::Key_F ) {
+            emit wall_bottom_pressed();
+            event->accept();
+            return;
+        }
+        if( event->key() == Qt::Key_D ) {
+            emit wall_top_pressed();
+            event->accept();
+            return;
+        }
+        if( event->key() == Qt::Key_A ) {
+            emit wall_left_pressed();
+            event->accept();
+            return;
+        }
+        if( event->key() == Qt::Key_S ) {
+            emit wall_right_pressed();
+            event->accept();
+            return;
+        }
+    }
+    if( insert_mode_ ) {
+        // leaving insert mode
+        if( event->key() == Qt::Key_Escape ) {
+            insert_mode_ = false;
+            event->accept();
+            return;
         }
 
-        if( !mod.testFlag( Qt::ShiftModifier ) ) {
-            QWidget::keyPressEvent( event );
+        // enter a character
+        QString text = event->text();
+        if( !text.isEmpty() ) {
+            lab_widget_->set_character( text.at(0) );
+            event->accept();
             return;
         }
     }
 
-    QString text = event->text();
-    if( !text.isEmpty() ) {
-        lab_widget_->set_character( text.at(0).toAscii() );
-        event->accept();
-        return;
-    }
 
     QWidget::keyPressEvent( event );
 }

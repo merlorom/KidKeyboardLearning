@@ -37,6 +37,8 @@ private:
 private:
     Ui::LabyrinthEditor* ui_;
     LabyrinthEditorWidget* lab_widget_;
+
+    bool insert_mode_;
 };
 
 }

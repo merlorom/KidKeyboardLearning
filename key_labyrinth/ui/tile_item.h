@@ -48,7 +48,7 @@ inline size_t TileItem::tile_col() const {
 class TileEditorItem : public TileItem {
 
 public:
-    TileEditorItem( LabyrinthEditorWidget& lab_widget, size_t tile_row, size_t tile_col );
+    TileEditorItem( const LabyrinthEditorWidget& lab_widget, size_t tile_row, size_t tile_col );
 
     virtual void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
 
@@ -56,7 +56,7 @@ protected:
     virtual const LabyrinthWidget& lab_widget() const;
 
 private:
-    LabyrinthEditorWidget& lab_widget_;
+    const LabyrinthEditorWidget& lab_widget_;
 };
 
 inline const LabyrinthWidget& TileEditorItem::lab_widget() const {
