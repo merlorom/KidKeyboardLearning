@@ -8,6 +8,7 @@
 namespace KeyLabyrinth {
     class Labyrinth;
     class TileItem;
+    class TileEditorItem;
 }
 
 namespace KeyLabyrinth {
@@ -20,19 +21,28 @@ class LabyrinthWidget : public QWidget {
 public:
     LabyrinthWidget( QWidget* parent = nullptr );
     virtual ~LabyrinthWidget();
+    void initialize();
 
     Labyrinth* labyrinth() const;
 
     qreal tile_size() const;
 
+    TileItem* tile_at( size_t tile_row, size_t tile_col ) const;
+
 public slots:
     void set_labyrinth( Labyrinth* lab );
 
+    virtual void move_at( TileItem* from_tile, size_t row, size_t col ) = 0;
+    virtual void move_left() = 0;
+    virtual void move_right() = 0;
+    virtual void move_up() = 0;
+    virtual void move_down() = 0;
+
 protected:
-    void initialize();
-    virtual void reset_scene();
-    virtual void fill_scene();
+    void reset_scene();
+    void fill_scene();
     virtual TileItem* create_tile( size_t tile_row, size_t tile_col ) = 0;
+    virtual QGraphicsScene* create_scene() = 0;
 
 protected:
     Labyrinth* lab_;
@@ -58,9 +68,6 @@ public:
     LabyrinthEditorWidget( QWidget* parent = nullptr );
     virtual ~LabyrinthEditorWidget();
 
-    TileItem* cur_tile() const;
-    void set_cur_tile( TileItem* tile );
-
 public slots:
     void set_nb_rows( int nb_rows );
     void set_nb_cols( int nb_cols );
@@ -70,24 +77,44 @@ public slots:
     void set_wall_top( bool set );
     void set_wall_bottom( bool set );
 
-private:
-    virtual void reset_scene();
-    virtual TileItem* create_tile( size_t tile_row, size_t tile_col );
+    void set_character( char c );
 
-    // events
-    virtual void mousePressEvent( QMouseEvent* event );
-    virtual void keyPressEvent( QKeyEvent* event );
+    virtual void move_at( TileItem* from_tile, size_t row, size_t col ) final;
+    virtual void move_left() final;
+    virtual void move_right() final;
+    virtual void move_up() final;
+    virtual void move_down() final;
 
 private:
-    TileItem* cur_tile_;
+    virtual QGraphicsScene* create_scene() final;
+    virtual TileItem* create_tile( size_t tile_row, size_t tile_col ) final;
+
+    QList<TileEditorItem*> selected_tiles() const;
+    TileEditorItem* first_selected_tile() const;
 };
-
-inline TileItem* LabyrinthEditorWidget::cur_tile() const {
-    return cur_tile_;
-}
 
 /******************************************************************************/
 
+class LabyrinthEditorWidgetScene : public QGraphicsScene {
+    Q_OBJECT
+
+public:
+    LabyrinthEditorWidgetScene( QWidget* parent );
+
+    virtual void mousePressEvent( QGraphicsSceneMouseEvent* event ) final;
+    virtual void keyPressEvent( QKeyEvent* event ) final;
+
+    QList<TileEditorItem*> selected_tiles() const;
+
+signals:
+    void move_left_pressed();
+    void move_right_pressed();
+    void move_up_pressed();
+    void move_down_pressed();
+};
+
 }
+
+/******************************************************************************/
 
 #endif

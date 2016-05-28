@@ -8,7 +8,7 @@ namespace Ui {
 }
 
 namespace KeyLabyrinth {
-    class LabyrinthWidget;
+    class LabyrinthEditorWidget;
 }
 
 namespace KeyLabyrinth {
@@ -20,12 +20,19 @@ public:
     LabyrinthEditor( QWidget* parent = 0 );
     ~LabyrinthEditor();
 
+signals:
+    void wall_left_pressed();
+    void wall_right_pressed();
+    void wall_top_pressed();
+    void wall_bottom_pressed();
+
 private:
     void initialize();
+    virtual void keyPressEvent( QKeyEvent* event ) final;
 
 private:
     Ui::LabyrinthEditor* ui_;
-    LabyrinthWidget* lab_widget_;
+    LabyrinthEditorWidget* lab_widget_;
 };
 
 }

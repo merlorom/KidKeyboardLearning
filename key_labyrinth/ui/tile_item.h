@@ -22,15 +22,26 @@ public:
     virtual QRectF boundingRect() const;
     virtual void paint( QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget );
 
+    Tile* tile() const;
+    size_t tile_row() const;
+    size_t tile_col() const;
+
 protected:
     virtual const LabyrinthWidget& lab_widget() const = 0;
-    const Labyrinth* labyrinth() const;
-    const Tile* tile() const;
+    Labyrinth* labyrinth() const;
 
 protected:
     size_t tile_row_;
     size_t tile_col_;
 };
+
+inline size_t TileItem::tile_row() const {
+    return tile_row_;
+}
+
+inline size_t TileItem::tile_col() const {
+    return tile_col_;
+}
 
 /******************************************************************************/
 

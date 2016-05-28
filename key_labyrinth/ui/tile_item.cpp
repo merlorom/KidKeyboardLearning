@@ -32,21 +32,39 @@ void TileItem::paint(
     if( t == nullptr ) {
         return;
     }
+
+    // text
     painter->drawText( boundingRect(), Qt::AlignCenter, QString( t->key() ) );
 
-    qreal size = lab_widget().tile_size();
-    painter->drawRoundedRect( boundingRect(), size / 4., size / 4. );
+    const QRectF rect = boundingRect();
+    const qreal wall_width = lab_widget().tile_size() / 20.;
+
+    // walls
+    painter->setPen( Qt::black );
+    painter->setBrush( Qt::black );
+    if( t->has_wall( Tile::Left ) ) {
+        painter->drawRect( rect.left(), rect.top(), wall_width, rect.height() );
+    }
+    if( t->has_wall( Tile::Right ) ) {
+        painter->drawRect( rect.right() - wall_width, rect.top(), wall_width, rect.height() );
+    }
+    if( t->has_wall( Tile::Top ) ) {
+        painter->drawRect( rect.left(), rect.top(), rect.width(), wall_width );
+    }
+    if( t->has_wall( Tile::Bottom ) ) {
+        painter->drawRect( rect.left(), rect.bottom() - wall_width, rect.width(), wall_width );
+    }
 }
 
-const Labyrinth* TileItem::labyrinth() const {
+Labyrinth* TileItem::labyrinth() const {
     return lab_widget().labyrinth();
 }
 
-const Tile* TileItem::tile() const {
+Tile* TileItem::tile() const {
     if( labyrinth() == nullptr ) {
         return nullptr;
     }
-    const auto& tiles = labyrinth()->tiles();
+    auto& tiles = labyrinth()->tiles();
     if( tiles.size() <= tile_row_ ) {
         return nullptr;
     }
@@ -65,19 +83,30 @@ TileEditorItem::TileEditorItem(
 ) :
     TileItem( tile_row, tile_col ),
     lab_widget_( lab_widget )
-{}
+{
+    setFlag( QGraphicsItem::ItemIsSelectable, true );
+}
 
 void TileEditorItem::paint(
     QPainter* painter,
     const QStyleOptionGraphicsItem* option,
     QWidget* widget
 ) {
-    if( lab_widget_.cur_tile() == this ) {
+    QRectF rect = boundingRect();
+
+    // selection
+    if( isSelected() ) {
         painter->setBrush( QColor( 255, 100, 100, 127 ) );
-        painter->drawRect( boundingRect() );
+        painter->drawRect( rect );
     }
 
     TileItem::paint( painter, option, widget );
+
+    // tile limit
+    const qreal tile_width = lab_widget().tile_size();
+    painter->setPen( Qt::lightGray );
+    painter->setBrush( QBrush() );
+    painter->drawRoundedRect( rect, tile_width / 4., tile_width / 4. );
 }
 
 /******************************************************************************/

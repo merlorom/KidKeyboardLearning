@@ -10,9 +10,9 @@ namespace KeyLabyrinth {
 class Tile {
 public:
     enum WallDir {
-      Down = 1,
+      Bottom = 1,
       Left = 2,
-      Up = 4,
+      Top = 4,
       Right = 8
     };
 
