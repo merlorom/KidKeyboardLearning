@@ -9,7 +9,7 @@ namespace KeyLabyrinth {
 
 class Tile {
 public:
-    enum WallDir {
+    enum class WallDir : int {
       Bottom = 1,
       Left = 2,
       Top = 4,
@@ -57,7 +57,7 @@ inline void Tile::set_walls( int walls ) {
 }
 
 inline bool Tile::has_wall( WallDir dir ) const {
-    return walls_ & dir;
+    return walls_ & int(dir);
 }
 
 /******************************************************************************/

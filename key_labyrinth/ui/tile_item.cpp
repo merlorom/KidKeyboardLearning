@@ -42,16 +42,16 @@ void TileItem::paint(
     // walls
     painter->setPen( Qt::black );
     painter->setBrush( Qt::black );
-    if( t->has_wall( Tile::Left ) ) {
+    if( t->has_wall( Tile::WallDir::Left ) ) {
         painter->drawRect( rect.left(), rect.top(), wall_width, rect.height() );
     }
-    if( t->has_wall( Tile::Right ) ) {
+    if( t->has_wall( Tile::WallDir::Right ) ) {
         painter->drawRect( rect.right() - wall_width, rect.top(), wall_width, rect.height() );
     }
-    if( t->has_wall( Tile::Top ) ) {
+    if( t->has_wall( Tile::WallDir::Top ) ) {
         painter->drawRect( rect.left(), rect.top(), rect.width(), wall_width );
     }
-    if( t->has_wall( Tile::Bottom ) ) {
+    if( t->has_wall( Tile::WallDir::Bottom ) ) {
         painter->drawRect( rect.left(), rect.bottom() - wall_width, rect.width(), wall_width );
     }
 }

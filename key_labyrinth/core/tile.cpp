@@ -16,9 +16,9 @@ Tile::~Tile() {}
 
 void Tile::set_wall( WallDir dir, bool set ) {
     if( set ) {
-        walls_ |= dir;
+        walls_ |= int(dir);
     } else {
-        walls_ = ~( ~walls_ | dir );
+        walls_ = ~( ~walls_ | int(dir) );
     }
 }
 
@@ -27,14 +27,14 @@ bool Tile::operator==( const Tile& rhs ) const {
 }
 
 std::ostream& operator<<( std::ostream& out, const Tile& tile ) {
-    out << tile.key() << " " << tile.walls();
+    out << int(tile.key()) << " " << tile.walls();
     return out;
 }
 
 std::istream& operator>>( std::istream& in, Tile& tile ) {
-    char key;
+    int key;
     in >> key;
-    tile.set_key( key );
+    tile.set_key( char(key) );
 
     int walls;
     in >> walls;

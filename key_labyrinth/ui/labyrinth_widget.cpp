@@ -147,7 +147,7 @@ void LabyrinthEditorWidget::set_wall_left( bool set ) {
 
     QList<TileEditorItem*> tile_items = selected_tiles();
     for( TileEditorItem* tile_item : tile_items ) {
-        tile_item->tile()->set_wall( Tile::Left, set );
+        tile_item->tile()->set_wall( Tile::WallDir::Left, set );
         tile_item->update();
     }
 }
@@ -159,7 +159,7 @@ void LabyrinthEditorWidget::set_wall_right( bool set ) {
 
     QList<TileEditorItem*> tile_items = selected_tiles();
     for( TileEditorItem* tile_item : tile_items ) {
-        tile_item->tile()->set_wall( Tile::Right, set );
+        tile_item->tile()->set_wall( Tile::WallDir::Right, set );
         tile_item->update();
     }
 }
@@ -171,7 +171,7 @@ void LabyrinthEditorWidget::set_wall_top( bool set ) {
 
     QList<TileEditorItem*> tile_items = selected_tiles();
     for( TileEditorItem* tile_item : tile_items ) {
-        tile_item->tile()->set_wall( Tile::Top, set );
+        tile_item->tile()->set_wall( Tile::WallDir::Top, set );
         tile_item->update();
     }
 }
