@@ -5,6 +5,7 @@
 #include <core/labyrinth.h>
 
 #include <QKeyEvent>
+#include <QFileDialog>
 
 #include <iostream>
 
@@ -45,6 +46,35 @@ void LabyrinthEditor::initialize() {
     connect( this, SIGNAL(wall_top_pressed()), ui_->pushWallTop, SLOT(toggle()) );
     connect( this, SIGNAL(wall_bottom_pressed()), ui_->pushWallBottom, SLOT(toggle()) );
 
+    // load/save
+    connect( ui_->pushLoad, SIGNAL(pressed()), this, SLOT(load()) );
+    connect( ui_->pushSave, SIGNAL(pressed()), this, SLOT(save()) );
+}
+
+void LabyrinthEditor::load() {
+    QString file_name = QFileDialog::getOpenFileName( this, tr("Open labyrinth"), "", tr( "Labyrinth Files (*.lab)") );
+    if( file_name.isEmpty() ) {
+        return;
+    }
+    Labyrinth* lab = new Labyrinth();
+    LabyrinthReader reader( *lab );
+    reader.read( file_name.toStdString() );
+    lab_widget_->set_labyrinth( lab );
+}
+
+void LabyrinthEditor::save() {
+    if( lab_widget_->labyrinth() == nullptr ) {
+        return;
+    }
+    QString file_name = QFileDialog::getSaveFileName( this, tr("Save labyrinth"), "", tr( "Labyrinth Files (*.lab)") );
+    if( file_name.isEmpty() ) {
+        return;
+    }
+    if( !file_name.endsWith( ".lab" ) ) {
+        file_name.append( ".lab" );
+    }
+    LabyrinthWriter writer( *lab_widget_->labyrinth() );
+    writer.write( file_name.toStdString() );
 }
 
 void LabyrinthEditor::keyPressEvent( QKeyEvent* event ) {

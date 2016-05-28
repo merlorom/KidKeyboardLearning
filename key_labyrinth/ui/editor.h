@@ -20,6 +20,10 @@ public:
     LabyrinthEditor( QWidget* parent = 0 );
     ~LabyrinthEditor();
 
+public slots:
+    void load();
+    void save();
+
 signals:
     void wall_left_pressed();
     void wall_right_pressed();

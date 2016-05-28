@@ -75,14 +75,14 @@ LabyrinthWriter::LabyrinthWriter( const Labyrinth& lab ) :
     lab_( lab )
 {}
 
-bool LabyrinthWriter::write( const std::string& /*path*/ ) const {
-    //std::ofstream out( path );
-    //if( !out.good() ) {
-        //return false;
-    //}
-    //bool ok = write( out );
-    //out.close();
-    return true;
+bool LabyrinthWriter::write( const std::string& path ) const {
+    std::ofstream out( path );
+    if( !out.good() ) {
+        return false;
+    }
+    bool ok = write( out );
+    out.close();
+    return ok;
 }
 
 bool LabyrinthWriter::write( std::ostream& out ) const {
@@ -110,13 +110,14 @@ LabyrinthReader::LabyrinthReader( Labyrinth& lab ) :
     lab_( lab )
 {}
 
-bool LabyrinthReader::read( const std::string& /*path*/ ) {
-    //std::ifstream in( path );
-    //if( !in.good() ) {
-        //return false;
-    //}
-
-    return true;
+bool LabyrinthReader::read( const std::string& path ) {
+    std::ifstream in( path );
+    if( !in.good() ) {
+        return false;
+    }
+    bool ok = read( in );
+    in.close();
+    return ok;
 }
 
 bool LabyrinthReader::read( std::istream& in ) {
