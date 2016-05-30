@@ -10,13 +10,17 @@ namespace KeyLabyrinth {
 
 Labyrinth::Labyrinth() :
     nb_rows_( 0 ),
-    nb_cols_( 0 )
+    nb_cols_( 0 ),
+    start_( { 0, 0 } ),
+    finish_( { 0, 0 } )
 {}
 
 void Labyrinth::reset() {
     tiles_.clear();
     nb_rows_ = 0;
     nb_cols_ = 0;
+    start_ = { 0, 0 };
+    finish_ = { 0, 0 };
 }
 
 void Labyrinth::resize( size_t nb_rows, size_t nb_cols ) {
@@ -44,7 +48,9 @@ void Labyrinth::set_nb_cols( size_t nb_cols ) {
 }
 
 bool Labyrinth::operator==( const Labyrinth& rhs ) const {
-    return tiles() == rhs.tiles();
+    return tiles() == rhs.tiles() &&
+        start_tile() == rhs.start_tile() &&
+        finish_tile() == rhs.finish_tile();
 }
 
 Labyrinth& Labyrinth::operator<<( const Modifier& mod ) {
@@ -89,7 +95,16 @@ bool LabyrinthWriter::write( std::ostream& out ) const {
     // writing header
     out << "Key Labyrinth file - version 1.0" << std::endl;
 
-    // writing tiles
+    bool ok = true;
+    ok &= write_tiles( out );
+    ok &= write_properties( out );
+
+    out << "END" << std::endl;
+    return ok;
+
+}
+
+bool LabyrinthWriter::write_tiles( std::ostream& out ) const {
     out << "TILES" << std::endl;
     out << lab_.tiles().size() << std::endl;; // nb_row
     for( const auto& tile_row : lab_.tiles() ) {
@@ -98,10 +113,15 @@ bool LabyrinthWriter::write( std::ostream& out ) const {
             out << tile << std::endl;
         }
     }
-
-    out << "END" << std::endl;
     return true;
+}
 
+bool LabyrinthWriter::write_properties( std::ostream& out ) const {
+    out << "PROPERTIES" << std::endl;
+    out << "START_TILE " << lab_.start_tile().row << " " << lab_.start_tile().col << std::endl;
+    out << "FINISH_TILE " << lab_.finish_tile().row << " " << lab_.finish_tile().col << std::endl;
+    out << "END_PROPERTIES" << std::endl;
+    return true;
 }
 
 /******************************************************************************/
@@ -124,6 +144,7 @@ bool LabyrinthReader::read( std::istream& in ) {
     lab_.reset();
 
     char linebuf[1080];
+    bool ok = true;
     do {
         in.getline( linebuf, sizeof( linebuf ) );
         std::istringstream line( linebuf );
@@ -137,13 +158,18 @@ bool LabyrinthReader::read( std::istream& in ) {
         }
 
         if( header == "TILES" ) {
-            read_tiles( in );
+            ok &= read_tiles( in );
             continue;
         }
 
-    } while( !in.eof() );
+        if( header == "PROPERTIES" ) {
+            ok &= read_properties( in );
+            continue;
+        }
 
-    return true;
+    } while( ok && !in.eof() );
+
+    return ok;
 }
 
 bool LabyrinthReader::read_tiles( std::istream& in ) {
@@ -170,6 +196,40 @@ bool LabyrinthReader::read_tiles( std::istream& in ) {
     }
 
     return true;
+}
+
+bool LabyrinthReader::read_properties( std::istream& in ) {
+    char linebuf[1080];
+    bool ok = true;
+    do {
+        in.getline( linebuf, sizeof( linebuf ) );
+        std::istringstream line( linebuf );
+
+        // reading header
+        std::string header;
+        line >> header;
+
+        if( header == "END_PROPERTIES" ) {
+            break;
+        }
+
+        if( header == "START_TILE" ) {
+            size_t row, col;
+            line >> row >> col;
+            lab_.set_start_tile( { row, col } );
+            continue;
+        }
+
+        if( header == "FINISH_TILE" ) {
+            size_t row, col;
+            line >> row >> col;
+            lab_.set_finish_tile( { row, col } );
+            continue;
+        }
+
+    } while( ok && !in.eof() );
+
+    return ok;
 }
 
 /******************************************************************************/

@@ -78,6 +78,9 @@ public slots:
     void set_wall_top( bool set );
     void set_wall_bottom( bool set );
 
+    void set_start_tile();
+    void set_finish_tile();
+
     void set_character( QChar c );
 
     virtual void move_at( TileItem* from_tile, size_t row, size_t col ) final;

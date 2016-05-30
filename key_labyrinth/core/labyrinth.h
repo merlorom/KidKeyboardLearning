@@ -11,6 +11,15 @@ namespace KeyLabyrinth {
 
 class Labyrinth {
 public:
+    struct TilePos {
+        bool operator==( const TilePos& rhs ) const {
+            return row == rhs.row && col == rhs.col;
+        }
+        size_t row;
+        size_t col;
+    };
+
+public:
     Labyrinth();
 
     void reset();
@@ -22,6 +31,11 @@ public:
 
     std::vector<std::vector<Tile>>& tiles();
     const std::vector<std::vector<Tile>>& tiles() const;
+
+    TilePos start_tile() const;
+    void set_start_tile( TilePos pos );
+    TilePos finish_tile() const;
+    void set_finish_tile( TilePos pos );
 
     bool operator==( const Labyrinth& rhs ) const;
 
@@ -35,6 +49,8 @@ private:
     size_t nb_rows_;
     size_t nb_cols_;
     std::vector<std::vector<Tile>> tiles_;
+    TilePos start_;
+    TilePos finish_;
 };
 
 inline size_t Labyrinth::nb_rows() const {
@@ -53,6 +69,22 @@ inline const std::vector<std::vector<Tile>>& Labyrinth::tiles() const {
     return tiles_;
 }
 
+inline Labyrinth::TilePos Labyrinth::start_tile() const {
+    return start_;
+}
+
+inline void Labyrinth::set_start_tile( TilePos pos ) {
+    start_ = pos;
+}
+
+inline Labyrinth::TilePos Labyrinth::finish_tile() const {
+    return finish_;
+}
+
+inline void Labyrinth::set_finish_tile( TilePos pos ) {
+    finish_ = pos;
+}
+
 /******************************************************************************/
 
 class LabyrinthWriter {
@@ -60,6 +92,10 @@ public:
     LabyrinthWriter( const Labyrinth& lab );
     bool write( const std::string& path ) const;
     bool write( std::ostream& out ) const;
+
+private:
+    bool write_tiles( std::ostream& out ) const;
+    bool write_properties( std::ostream& out ) const;
 
 private:
     const Labyrinth& lab_;
@@ -75,6 +111,7 @@ public:
 
 private:
     bool read_tiles( std::istream& in );
+    bool read_properties( std::istream& in );
 
 private:
     Labyrinth& lab_;

@@ -196,6 +196,48 @@ void LabyrinthEditorWidget::set_wall_bottom( bool set ) {
     }
 }
 
+void LabyrinthEditorWidget::set_start_tile() {
+    if( lab_ == nullptr ) {
+        return;
+    }
+
+    TileItem* prev_start_tile = tile_at( lab_->start_tile().row, lab_->start_tile().col );
+    TileItem* start_tile = first_selected_tile();
+    if( start_tile != nullptr ) {
+        lab_->set_start_tile( { start_tile->tile_row(), start_tile->tile_col() } );
+    } else {
+        lab_->set_start_tile( { 0, 0 } );
+        start_tile = tile_at( 0, 0 );
+    }
+    if( prev_start_tile != nullptr ) {
+        prev_start_tile->update();
+    }
+    if( start_tile != nullptr ) {
+        start_tile->update();
+    }
+}
+
+void LabyrinthEditorWidget::set_finish_tile() {
+    if( lab_ == nullptr ) {
+        return;
+    }
+
+    TileItem* prev_finish_tile = tile_at( lab_->finish_tile().row, lab_->finish_tile().col );
+    TileItem* finish_tile = first_selected_tile();
+    if( finish_tile != nullptr ) {
+        lab_->set_finish_tile( { finish_tile->tile_row(), finish_tile->tile_col() } );
+    } else {
+        lab_->set_finish_tile( { 0, 0 } );
+        finish_tile = tile_at( 0, 0 );
+    }
+    if( prev_finish_tile != nullptr ) {
+        prev_finish_tile->update();
+    }
+    if( finish_tile != nullptr ) {
+        finish_tile->update();
+    }
+}
+
 void LabyrinthEditorWidget::set_character( QChar c ) {
     if( lab_ == nullptr || !c.isPrint() ) {
         return;

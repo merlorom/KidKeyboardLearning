@@ -46,6 +46,10 @@ void LabyrinthEditor::initialize() {
     connect( this, SIGNAL(wall_top_pressed()), ui_->pushWallTop, SLOT(toggle()) );
     connect( this, SIGNAL(wall_bottom_pressed()), ui_->pushWallBottom, SLOT(toggle()) );
 
+    // start finish
+    connect( ui_->pushStartTile, SIGNAL(clicked()), lab_widget_, SLOT(set_start_tile()) );
+    connect( ui_->pushFinishTile, SIGNAL(clicked()), lab_widget_, SLOT(set_finish_tile()) );
+
     // load/save
     connect( ui_->pushLoad, SIGNAL(pressed()), this, SLOT(load()) );
     connect( ui_->pushSave, SIGNAL(pressed()), this, SLOT(save()) );

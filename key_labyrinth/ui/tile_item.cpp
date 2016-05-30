@@ -33,11 +33,22 @@ void TileItem::paint(
         return;
     }
 
-    // text
-    painter->drawText( boundingRect(), Qt::AlignCenter, QString( t->key() ) );
-
     const QRectF rect = boundingRect();
     const qreal wall_width = lab_widget().tile_size() / 20.;
+
+    // start finish
+    Labyrinth::TilePos start_pos = labyrinth()->start_tile();
+    Labyrinth::TilePos finish_pos = labyrinth()->finish_tile();
+    if( start_pos.row == tile_row_ && start_pos.col == tile_col_ ) {
+        painter->setBrush( QColor( 0, 255, 0, 255 ) );
+        painter->drawRect( rect );
+    } else if( finish_pos.row == tile_row_ && finish_pos.col == tile_col_ ) {
+        painter->setBrush( QColor( 255, 0, 0, 255 ) );
+        painter->drawRect( rect );
+    }
+
+    // text
+    painter->drawText( boundingRect(), Qt::AlignCenter, QString( t->key() ) );
 
     // walls
     painter->setPen( Qt::black );
@@ -94,13 +105,13 @@ void TileEditorItem::paint(
 ) {
     QRectF rect = boundingRect();
 
+    TileItem::paint( painter, option, widget );
+
     // selection
     if( isSelected() ) {
         painter->setBrush( QColor( 255, 100, 100, 127 ) );
         painter->drawRect( rect );
     }
-
-    TileItem::paint( painter, option, widget );
 
     // tile limit
     const qreal tile_width = lab_widget().tile_size();

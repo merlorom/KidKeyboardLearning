@@ -37,6 +37,8 @@ Labyrinth LabyrinthTests::make_labyrinth() const {
     Labyrinth lab;
     lab << Labyrinth::NewRow << Tile( 'e', 2 ) << Tile( 'i', 3 ) << Tile( 'o', 4 );
     lab << Labyrinth::NewRow << Tile( '~', 0 ) << Tile( ' ', 1 ) << Tile( 'h', 7 ) << Tile( 't', 3 );
+    lab.set_start_tile( { 0, 0 } );
+    lab.set_finish_tile( { 1, 3 } );
     return std::move( lab );
 }
 
